@@ -3,7 +3,7 @@
    has one, the whole section stays hidden rather than shipping a button that
    quietly does nothing. */
 
-const FORM_ENDPOINT = '';
+const FORM_ENDPOINT = 'https://formspree.io/f/myeyjdkw';
 
 const section = document.getElementById('signup');
 const form = document.getElementById('signup-form');
