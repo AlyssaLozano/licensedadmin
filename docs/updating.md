@@ -49,6 +49,25 @@ are fine, the site handles quoted fields.
 
 **In a text editor.** Wrap any value containing a comma in double quotes.
 
+## Adding somebody from your phone
+
+Open Code in the Claude app on `AlyssaLozano/licensedadmin` and paste what the
+person sent you, however they wrote it, with "add this to the directory". The
+repo's `CLAUDE.md` tells the session the format, so it does not need explaining.
+
+A submission usually looks like one of these, and all of them are enough:
+
+```
+Shola Lawal, LCCA, Region 6, Lawalshola@gmail.com, 346 582 0125
+Tysion Smith tysions@aol.com 832-727-3822 houston
+sonya brookins sonya@grospecialistsoftexas.com region 3
+```
+
+Say if the person holds both licences, or the listing goes under GRO only.
+
+If nobody tells the session otherwise it will commit and push, and the site
+updates about a minute later.
+
 ## Publishing a change
 
 ```bash
