@@ -10,6 +10,7 @@ const TYPES = [
     key: 'CPA',
     label: 'Child Placing Agency',
     abbr: 'CPA',
+    licence: 'LCPAA',
     /* A CPA administrator's licence reads LCPAA, so people submit that rather
        than the operation type. Accept both. */
     aliases: ['cpa', 'lcpaa', 'child placing agency', 'child-placing agency', 'child placement agency'],
@@ -18,6 +19,7 @@ const TYPES = [
     key: 'GRO',
     label: 'General Residential Operation',
     abbr: 'GRO',
+    licence: 'LCCA',
     aliases: ['gro', 'lcca', 'general residential operation'],
   },
 ];
@@ -222,14 +224,30 @@ function initials(name) {
     .toUpperCase();
 }
 
-function card(row) {
+/* Somebody holding both licences appears under both tabs, and listing both
+   credentials in each place makes the reader work out which one applies here.
+   Show the licence belonging to the tab they are looking at. Everyone else's
+   name is left exactly as they submitted it. */
+function displayName(row, typeKey) {
+  if (row.types.length < 2) return row.name;
+
+  const type = TYPES.find((t) => t.key === typeKey);
+  const base = row.name
+    .replace(/,\s*(LCCA|LCPAA)\b/gi, '')
+    .replace(/,\s*$/, '')
+    .trim();
+
+  return type ? base + ', ' + type.licence : base;
+}
+
+function card(row, typeKey) {
   const li = el('li', 'card');
 
   const head = el('div', 'card-head');
   head.append(el('span', 'avatar', initials(row.name)));
 
   const heading = el('div', 'card-heading');
-  heading.append(el('h3', 'card-name', row.name));
+  heading.append(el('h3', 'card-name', displayName(row, typeKey)));
   if (row.organization) heading.append(el('p', 'card-org', row.organization));
 
   /* Most submissions name an HHSC region rather than a city. Name the area too
@@ -326,7 +344,7 @@ function renderPanel() {
     section.append(heading);
 
     const list = el('ul', 'cards');
-    inRegion.forEach((r) => list.append(card(r)));
+    inRegion.forEach((r) => list.append(card(r, activeType)));
     section.append(list);
 
     panel.append(section);

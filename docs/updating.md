@@ -26,7 +26,9 @@ tabs from the one row:
 "Alyssa Lozano, MS, MPA","LCCA; LCPAA",...
 ```
 
-One row per person means a correction only has to be made once.
+One row per person means a correction only has to be made once. The card shows
+whichever licence belongs to the tab being viewed, LCPAA under CPA and LCCA
+under GRO, so a reader is never left working out which one applies.
 
 Leave a cell empty when you do not have it. The card only shows the lines it
 actually has, so a blank never leaves a gap on the page.
