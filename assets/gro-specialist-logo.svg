@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="GRO Specialist of Texas">
+  <title>GRO Specialist of Texas</title>
+  <!--
+    A badge mark: the state outline with the lone star over the geographic
+    centre. The outline is plotted from real corner coordinates rather than
+    drawn by eye, because a Texas that is slightly wrong reads as wrong to
+    everybody who lives here. Replace it if a designer produces real artwork.
+  -->
+  <defs>
+    <style>
+      .field { fill: #2f5d50; }
+      .state { fill: #fbf7f0; }
+      .star { fill: #c9973f; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="120" height="120" rx="26" class="field" />
+
+  <g transform="translate(17.7 18) scale(0.84)">
+    <path class="state" d="M 27.5,0 L 50.6,0 L 50.6,18.2 L 56.7,21.6 L 81.0,26.3
+      L 95.9,27.7 L 95.9,51.6 L 100,61.0 L 90.9,67.5 L 77.9,76.0 L 71.9,85.4
+      L 70.3,94.7 L 72.3,100 L 57.4,94.7 L 47.5,79.7 L 39.9,62.9 L 32.3,62.9
+      L 27.8,70.4 L 15.6,63.8 L 1.1,44.1 L 0.4,42.2 L 27.5,42.2 Z" />
+    <path class="star" d="M 56.0,35.5 L 59.3,44.5 L 68.8,44.8 L 61.3,50.7
+      L 63.9,59.9 L 56.0,54.6 L 48.1,59.9 L 50.7,50.7 L 43.2,44.8 L 52.7,44.5 Z" />
+  </g>
+</svg>

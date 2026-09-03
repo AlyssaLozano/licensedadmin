@@ -137,6 +137,70 @@ a:hover {
   color: var(--muted);
 }
 
+/* --- supporters --------------------------------------------------------- */
+
+.supporters {
+  padding: 2.25rem 0 2.5rem;
+  background: var(--wash);
+  border-bottom: 1px solid var(--line);
+}
+
+.supporters-intro {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.supporter-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.supporter {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1.25rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.supporter-logo {
+  flex: 0 0 auto;
+  width: auto;
+  height: 4.25rem;
+}
+
+.supporter-name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.supporter-copy {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.supporter-link {
+  margin: 0.4rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
 /* --- notice ------------------------------------------------------------- */
 
 .notice {
@@ -330,6 +394,13 @@ a:hover {
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.25;
+}
+
+.card-org {
+  margin: 0.2rem 0 0;
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 550;
 }
 
 .card-city {

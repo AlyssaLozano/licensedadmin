@@ -10,13 +10,15 @@ const TYPES = [
     key: 'CPA',
     label: 'Child Placing Agency',
     abbr: 'CPA',
-    aliases: ['cpa', 'child placing agency', 'child-placing agency', 'child placement agency'],
+    /* A CPA administrator's licence reads LCPAA, so people submit that rather
+       than the operation type. Accept both. */
+    aliases: ['cpa', 'lcpaa', 'child placing agency', 'child-placing agency', 'child placement agency'],
   },
   {
     key: 'GRO',
     label: 'General Residential Operation',
     abbr: 'GRO',
-    aliases: ['gro', 'general residential operation'],
+    aliases: ['gro', 'lcca', 'general residential operation'],
   },
   { key: 'OTHER', label: 'Other', abbr: '', aliases: [] },
 ];
@@ -24,6 +26,11 @@ const TYPES = [
 /* Cities group within a tab. Anything unrecognised falls to "Other" rather than
    creating a new heading, so the page shape stays predictable. */
 const REGIONS = ['Houston', 'Dallas', 'Austin', 'Other'];
+
+/* Listings arrive quoting an HHSC region number, not a city, so the number can
+   stand in for the grouping when no city bucket is given. Only the three that
+   have their own tab need mapping: everything else lands in Other anyway. */
+const REGION_BY_NUMBER = { 3: 'Dallas', 6: 'Houston', 7: 'Austin' };
 
 let rows = [];
 let activeType = TYPES[0].key;
@@ -94,9 +101,10 @@ function typeOf(value) {
   return hit ? hit.key : 'OTHER';
 }
 
-function regionOf(value) {
+function regionOf(value, hhscRegion) {
   const v = (value || '').trim().toLowerCase();
-  return REGIONS.find((r) => r.toLowerCase() === v) || 'Other';
+  const named = REGIONS.find((r) => r.toLowerCase() === v);
+  return named || REGION_BY_NUMBER[Number(hhscRegion)] || 'Other';
 }
 
 function normalise(records) {
@@ -105,8 +113,10 @@ function normalise(records) {
     .map((r) => ({
       name: r.name,
       type: typeOf(r.license_type),
-      region: regionOf(r.region),
+      region: regionOf(r.region, r.hhsc_region),
+      hhscRegion: r.hhsc_region || '',
       city: r.city || '',
+      organization: r.organization || '',
       phone: r.phone || '',
       email: r.email || '',
       website: r.website || '',
@@ -118,7 +128,10 @@ function normalise(records) {
 
 function matches(row, term) {
   if (!term) return true;
-  return [row.name, row.city, row.region].join(' ').toLowerCase().includes(term);
+  return [row.name, row.city, row.region, row.organization, 'region ' + row.hhscRegion]
+    .join(' ')
+    .toLowerCase()
+    .includes(term);
 }
 
 function currentTerm() {
@@ -176,7 +189,13 @@ function card(row) {
 
   const heading = el('div', 'card-heading');
   heading.append(el('h3', 'card-name', row.name));
-  if (row.city) heading.append(el('p', 'card-city', row.city));
+  if (row.organization) heading.append(el('p', 'card-org', row.organization));
+
+  /* Most submissions name an HHSC region rather than a city, so show whichever
+     of the two we actually have. */
+  const place = [row.city, row.hhscRegion ? 'Region ' + row.hhscRegion : ''].filter(Boolean);
+  if (place.length) heading.append(el('p', 'card-city', place.join(' · ')));
+
   head.append(heading);
 
   li.append(head);
@@ -322,6 +341,14 @@ async function start() {
     showNotice('This is sample data. Replace the rows in data/administrators.csv with real listings.');
   }
 
+  /* Tab order is CPA first by design, but opening on an empty tab reads as a
+     broken site. Fall through to the first tab that actually has somebody. */
+  if (!rows.some((r) => r.type === activeType)) {
+    const populated = visibleTypes().find((t) => rows.some((r) => r.type === t.key));
+    if (populated) activeType = populated.key;
+  }
+
+  /* An explicit link wins over that, so a shared #cpa still lands on CPA. */
   const fromUrl = location.hash.replace('#', '').toUpperCase();
   if (TYPES.some((t) => t.key === fromUrl)) activeType = fromUrl;
 

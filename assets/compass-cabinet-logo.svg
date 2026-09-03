@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-label="Compass Cabinet">
+  <title>Compass Cabinet</title>
+  <!--
+    A vector stand-in for the Compass Cabinet mark: compass rose, filing cabinet
+    with a document, and an alert bell. Replace by dropping the real artwork in as
+    client/assets/logo.png — the client prefers the PNG when it exists.
+  -->
+  <defs>
+    <style>
+      .navy { fill: #1c3a5e; }
+      .teal { fill: #2a9d9d; }
+      .stroke-navy { fill: none; stroke: #1c3a5e; stroke-width: 7; }
+      .paper { fill: #ffffff; stroke: #2a9d9d; stroke-width: 3; }
+      .line { stroke: #2a9d9d; stroke-width: 3; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- compass ring -->
+  <circle cx="150" cy="130" r="86" class="stroke-navy" />
+
+  <!-- cardinal points -->
+  <path class="navy" d="M150 18 l11 40 -11 -9 -11 9 z" />
+  <path class="navy" d="M150 242 l11 -40 -11 9 -11 -9 z" />
+  <path class="navy" d="M38 130 l40 -11 -9 11 9 11 z" />
+
+  <!-- needle -->
+  <path class="teal" d="M196 84 L150 130 L104 176 L150 130 Z" />
+  <path class="teal" d="M196 84 L163 143 L150 130 Z" />
+  <path class="navy" d="M104 176 L137 117 L150 130 Z" />
+  <circle cx="150" cy="130" r="11" fill="#ffffff" stroke="#1c3a5e" stroke-width="5" />
+
+  <!-- document -->
+  <path class="paper" d="M232 78 h74 l20 20 v66 h-94 z" />
+  <path class="line" d="M246 104 h60 M246 118 h60 M246 132 h44" />
+
+  <!-- cabinet -->
+  <rect x="214" y="118" width="130" height="42" rx="6" class="teal" />
+  <rect x="206" y="156" width="146" height="76" rx="8" class="navy" />
+  <rect x="258" y="188" width="42" height="8" rx="4" fill="#ffffff" />
+
+  <!-- bell -->
+  <circle cx="336" cy="212" r="34" class="teal" />
+  <path fill="#ffffff" d="M336 190 c-9 0-16 7-16 16 v10 l-5 7 h42 l-5-7 v-10 c0-9-7-16-16-16 z" />
+  <circle cx="336" cy="234" r="6" fill="#ffffff" />
+  <path class="line" stroke="#2a9d9d" d="M378 182 h14 M372 196 l13 -6 M372 168 l13 6" />
+</svg>

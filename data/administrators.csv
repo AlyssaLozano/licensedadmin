@@ -1,5 +1,6 @@
-name,license_type,region,city,phone,email,website
-"Jane Doe (example)",CPA,Houston,Houston,"(713) 555-0100","jane@example.com","https://example.com"
-"John Roe (example)",CPA,Dallas,Plano,"(214) 555-0101","",""
-"Alex Sample (example)",GRO,Austin,"Round Rock","","alex@example.com",""
-"Pat Placeholder (example)",GRO,Other,Lubbock,"(806) 555-0102","","https://example.org"
+name,license_type,hhsc_region,region,city,organization,phone,email,website
+"Akiya Barnes, Ed.S, MA, LPC Associate, LCCA",LCCA,8,,"San Antonio",,"(210) 259-1713","info@nurturedthoughtsllc.com",
+"Julissa Rowe, BA, LCCA",LCCA,,,,"Divine Youth Guidance, LLC","(919) 396-2478","info@divineyouthguidance.org",
+"Shola Lawal, LCCA",LCCA,6,,,,"(346) 582-0125","Lawalshola@gmail.com",
+"Shronica Holmes, LCCA",LCCA,4,,,,"(903) 279-4206","Admin@legacyfoundationsrc.org",
+"Vanessa Lopez, LCCA",LCCA,3,,,,"(915) 731-8252",,
