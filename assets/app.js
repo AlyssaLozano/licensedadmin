@@ -114,10 +114,19 @@ function toRecords(table) {
    and the person then appears under both tabs. One row per person keeps a
    correction from having to be made twice. */
 function typesOf(value) {
-  const keys = (value || '')
+  const parts = (value || '')
     .split(/[;/,]/)
     .map((v) => v.trim().toLowerCase())
-    .filter(Boolean)
+    .filter(Boolean);
+
+  /* Nearly everybody on this list is an LCCA, so a row nobody has filled in yet
+     defaults to GRO. A misspelled licence is left unplaced on purpose: a blank
+     means the field is outstanding, a typo means somebody meant something
+     specific and it did not land, and quietly turning that into LCCA would
+     publish a claim about their licence that nobody made. */
+  if (!parts.length) return ['GRO'];
+
+  const keys = parts
     .map((v) => TYPES.find((t) => t.aliases.includes(v)))
     .filter(Boolean)
     .map((t) => t.key);

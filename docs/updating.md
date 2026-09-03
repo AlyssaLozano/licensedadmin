@@ -36,9 +36,10 @@ for a region that is known but does not have a tab of its own, such as San
 Antonio or East Texas. A blank region gets "Undisclosed" instead, so the two
 are never confused.
 
-A row whose `license_type` is blank or misspelled belongs to neither tab. Rather
-than dropping that person quietly, the page prints a notice at the top naming
-them, so a typo shows up as a message to fix rather than a person who vanished.
+Leave `license_type` blank and the row is treated as LCCA, since nearly everyone
+on this list is one. A *misspelled* licence is different: it belongs to neither
+tab, and the page prints a notice at the top naming that person, so a typo shows
+up as a message to fix rather than as a wrong claim about somebody's licence.
 
 ## Editing it
 
