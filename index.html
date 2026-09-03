@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Licensed Administrators in Texas</title>
+<meta name="description" content="One place to find a licensed child care administrator in Texas, listed by operation type and city.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <h1>Licensed Administrators in Texas</h1>
+    <p class="lede">
+      People need this list all the time, so here it is in one place. Pick the
+      type of operation, then find your city.
+    </p>
+    <dl class="glossary">
+      <div><dt>CPA</dt><dd>Child Placing Agency</dd></div>
+      <div><dt>GRO</dt><dd>General Residential Operation</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div id="notice" class="notice" hidden></div>
+
+  <div class="controls">
+    <label class="search">
+      <span class="visually-hidden">Search by name or city</span>
+      <input id="search" type="search" placeholder="Search by name or city"
+             autocomplete="off" spellcheck="false">
+    </label>
+    <p id="count" class="count" aria-live="polite"></p>
+  </div>
+
+  <div id="tabs" class="tabs" role="tablist" aria-label="Type of operation"></div>
+
+  <div id="panel" class="panel" role="tabpanel" tabindex="0"></div>
+
+</main>
+
+<footer class="footer wrap">
+  <p>
+    This list is maintained by hand. To be added, corrected, or removed, please get in touch.
+  </p>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
