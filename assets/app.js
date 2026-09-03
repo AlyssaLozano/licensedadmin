@@ -20,12 +20,12 @@ const TYPES = [
     abbr: 'GRO',
     aliases: ['gro', 'lcca', 'general residential operation'],
   },
-  { key: 'OTHER', label: 'Other', abbr: '', aliases: [] },
+  { key: 'OTHER', label: 'Undisclosed', abbr: '', aliases: [] },
 ];
 
 /* Cities group within a tab. Anything unrecognised falls to "Other" rather than
    creating a new heading, so the page shape stays predictable. */
-const REGIONS = ['Houston', 'Dallas', 'Austin', 'Other'];
+const REGIONS = ['Houston', 'Dallas', 'Austin', 'Other', 'Undisclosed'];
 
 /* Listings arrive quoting an HHSC region number, not a city, so the number can
    stand in for the grouping when no city bucket is given. Only the three that
@@ -128,10 +128,19 @@ function typesOf(value) {
   return [...new Set(keys.length ? keys : ['OTHER'])];
 }
 
+/* "Other" and "Undisclosed" are different facts and should not share a
+   heading. San Antonio is a region we know and simply has no tab; a blank is a
+   person who never told us. Filing the second under "Other" implies we placed
+   them somewhere, and readers stop trusting the headings. */
 function regionOf(value, hhscRegion) {
   const v = (value || '').trim().toLowerCase();
   const named = REGIONS.find((r) => r.toLowerCase() === v);
-  return named || REGION_BY_NUMBER[Number(hhscRegion)] || 'Other';
+  if (named) return named;
+
+  const byNumber = REGION_BY_NUMBER[Number(hhscRegion)];
+  if (byNumber) return byNumber;
+
+  return hhscRegion ? 'Other' : 'Undisclosed';
 }
 
 function normalise(records) {
