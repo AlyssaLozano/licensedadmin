@@ -31,10 +31,14 @@ One row per person means a correction only has to be made once.
 Leave a cell empty when you do not have it. The card only shows the lines it
 actually has, so a blank never leaves a gap on the page.
 
-Anything unexpected in `license_type` lands in an "Other" tab, and anything
-unexpected in `region` lands under "Other". Nothing is ever silently dropped,
-which means a typo shows up as a person in the wrong place rather than a person
-who vanished.
+There are only two tabs, CPA and GRO. "Other" is a region heading inside a tab,
+for a region that is known but does not have a tab of its own, such as San
+Antonio or East Texas. A blank region gets "Undisclosed" instead, so the two
+are never confused.
+
+A row whose `license_type` is blank or misspelled belongs to neither tab. Rather
+than dropping that person quietly, the page prints a notice at the top naming
+them, so a typo shows up as a message to fix rather than a person who vanished.
 
 ## Editing it
 

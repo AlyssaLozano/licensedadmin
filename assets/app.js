@@ -3,8 +3,8 @@
 
 const DATA_URL = 'data/administrators.csv';
 
-/* Tab order is fixed. A type outside this list still shows, under "Other", so a
-   typo in the CSV never silently hides somebody. */
+/* These two are the only tabs. "Other" is a region heading inside a tab, never
+   a tab of its own. */
 const TYPES = [
   {
     key: 'CPA',
@@ -20,7 +20,6 @@ const TYPES = [
     abbr: 'GRO',
     aliases: ['gro', 'lcca', 'general residential operation'],
   },
-  { key: 'OTHER', label: 'Undisclosed', abbr: '', aliases: [] },
 ];
 
 /* Cities group within a tab. Anything unrecognised falls to "Other" rather than
@@ -115,17 +114,15 @@ function toRecords(table) {
    and the person then appears under both tabs. One row per person keeps a
    correction from having to be made twice. */
 function typesOf(value) {
-  const parts = (value || '')
+  const keys = (value || '')
     .split(/[;/,]/)
     .map((v) => v.trim().toLowerCase())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((v) => TYPES.find((t) => t.aliases.includes(v)))
+    .filter(Boolean)
+    .map((t) => t.key);
 
-  const keys = parts.map((v) => {
-    const hit = TYPES.find((t) => t.aliases.includes(v));
-    return hit ? hit.key : 'OTHER';
-  });
-
-  return [...new Set(keys.length ? keys : ['OTHER'])];
+  return [...new Set(keys)];
 }
 
 /* "Other" and "Undisclosed" are different facts and should not share a
@@ -175,8 +172,7 @@ function currentTerm() {
 }
 
 function visibleTypes() {
-  /* "Other" earns a tab only when something actually lands in it. */
-  return TYPES.filter((t) => t.key !== 'OTHER' || rows.some((r) => r.types.includes('OTHER')));
+  return TYPES;
 }
 
 /* --- rendering ---------------------------------------------------------- */
@@ -379,6 +375,18 @@ async function start() {
 
   if (rows.some((r) => /\(example\)/i.test(r.name))) {
     showNotice('This is sample data. Replace the rows in data/administrators.csv with real listings.');
+  }
+
+  /* With no third tab to catch them, a row whose licence type is missing or
+     misspelled belongs to no tab at all. Say so rather than letting somebody
+     drop off the page in silence. */
+  const unplaced = rows.filter((r) => !r.types.length);
+  if (unplaced.length) {
+    showNotice(
+      'Not listed for want of a licence type: ' +
+        unplaced.map((r) => r.name).join(', ') +
+        '. Add LCCA or LCPAA to those rows in data/administrators.csv.'
+    );
   }
 
   /* Tab order is CPA first by design, but opening on an empty tab reads as a
