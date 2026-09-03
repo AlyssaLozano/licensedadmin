@@ -1,13 +1,10 @@
 # Licensed Admin
 
-Separate product, separate repository. This is deliberately not part of
-Compass Cabinet: the two share a problem domain but not a codebase, a
-database, or a release cycle.
+Its own product, its own repository. Not part of Compass Cabinet
+(`AlyssaLozano/compass-cabinet`): the two share a problem domain but not a
+codebase, a database, or a release cycle. Nothing was moved in from there and
+nothing should be.
 
 ## Status
 
-New repository. Nothing has been moved in yet.
-
-## Repository
-
-https://github.com/AlyssaLozano/licensedadmin
+New. Scope not yet written down.
