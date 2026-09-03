@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Licensed Admin">
+  <title>Licensed Admin</title>
+  <!--
+    Script fonts are not web safe, so the stack ends in the generic `cursive`
+    keyword: every platform maps that to something handwritten, which is closer
+    to the intent than falling back to a block sans.
+  -->
+  <rect width="64" height="64" rx="14" fill="#a65a3a" />
+  <text x="32" y="45"
+        font-family="'Brush Script MT', 'Segoe Script', 'Lucida Handwriting', 'Apple Chancery', cursive"
+        font-size="40" font-style="italic" fill="#fbf7f0"
+        text-anchor="middle">LA</text>
+</svg>
