@@ -7,13 +7,26 @@ no database and no login. Edit that file, save, push, and the site updates.
 
 | Column | Required | What it does |
 | --- | --- | --- |
-| `name` | yes | The administrator's name. Rows with no name are skipped. |
-| `license_type` | yes | `CPA` or `GRO`. This picks the tab. |
-| `region` | yes | `Houston`, `Dallas`, `Austin`, or `Other`. This picks the heading inside the tab. |
-| `city` | no | The actual city, shown under the name. Round Rock sits under the Austin heading, for example. |
+| `name` | yes | The administrator's name and credentials. Rows with no name are skipped. |
+| `license_type` | yes | `LCCA` for GRO, `LCPAA` for CPA. This picks the tab. |
+| `hhsc_region` | no | The HHSC region number, 1 to 11. Shown on the card, and used to pick the city heading when `region` is blank. |
+| `region` | no | `Houston`, `Dallas`, `Austin`, or `Other`. Overrides whatever the region number would have chosen. |
+| `city` | no | The actual city. Round Rock sits under the Austin heading, for example. |
+| `organization` | no | Their agency or company. |
 | `phone` | no | Shown as a tap-to-call link. |
 | `email` | no | Shown as a mailto link. |
 | `website` | no | With or without `https://`, either works. |
+
+### Somebody who holds both licences
+
+Put both in `license_type`, separated by a semicolon, and they appear under both
+tabs from the one row:
+
+```
+"Alyssa Lozano, MS, MPA","LCCA; LCPAA",...
+```
+
+One row per person means a correction only has to be made once.
 
 Leave a cell empty when you do not have it. The card only shows the lines it
 actually has, so a blank never leaves a gap on the page.

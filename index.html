@@ -86,6 +86,91 @@
 
 </main>
 
+<section id="signup" class="signup wrap" hidden>
+  <div class="signup-box">
+    <h2 class="signup-title">Want to be added to this list?</h2>
+    <p class="signup-copy">
+      Fill this in and it goes straight to the person who maintains the
+      directory. Only your name, licence type and email are needed. Everything
+      else is optional, and only what you enter here gets published.
+    </p>
+
+    <form id="signup-form" class="signup-form" novalidate>
+      <div class="field field-wide">
+        <label for="f-name">Full name and credentials</label>
+        <input id="f-name" name="name" type="text" required
+               placeholder="Jane Smith, LCCA" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="f-licence">Licence type</label>
+        <select id="f-licence" name="licence" required>
+          <option value="">Choose one</option>
+          <option value="LCCA">LCCA (General Residential Operation)</option>
+          <option value="LCPAA">LCPAA (Child Placing Agency)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-region">HHSC region <span class="optional">optional</span></label>
+        <select id="f-region" name="region">
+          <option value="">Choose one</option>
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5</option><option>6</option>
+          <option>7</option><option>8</option><option>9</option>
+          <option>10</option><option>11</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-city">City <span class="optional">optional</span></label>
+        <input id="f-city" name="city" type="text" autocomplete="address-level2">
+      </div>
+
+      <div class="field">
+        <label for="f-org">Organisation <span class="optional">optional</span></label>
+        <input id="f-org" name="organisation" type="text" autocomplete="organization">
+      </div>
+
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="f-phone">Phone <span class="optional">optional</span></label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+      </div>
+
+      <div class="field field-wide">
+        <label for="f-website">Website <span class="optional">optional</span></label>
+        <input id="f-website" name="website" type="text" placeholder="grospecialiststx.com">
+      </div>
+
+      <!-- Bots fill hidden fields in. People do not. -->
+      <div class="field honeypot" aria-hidden="true">
+        <label for="f-company">Leave this empty</label>
+        <input id="f-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field field-wide consent">
+        <label>
+          <input id="f-consent" name="consent" type="checkbox" required>
+          <span>
+            I agree to have the details above published on this public
+            directory, and I understand a public page can be read by anyone.
+          </span>
+        </label>
+      </div>
+
+      <div class="field field-wide">
+        <button id="f-submit" class="submit" type="submit">Send my details</button>
+        <p id="f-status" class="form-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
 <footer class="footer wrap">
   <p>
     This list is maintained by hand. To be added, corrected, or removed, please get in touch.
@@ -93,5 +178,6 @@
 </footer>
 
 <script src="assets/app.js"></script>
+<script src="assets/form.js"></script>
 </body>
 </html>

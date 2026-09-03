@@ -32,6 +32,22 @@ const REGIONS = ['Houston', 'Dallas', 'Austin', 'Other'];
    have their own tab need mapping: everything else lands in Other anyway. */
 const REGION_BY_NUMBER = { 3: 'Dallas', 6: 'Houston', 7: 'Austin' };
 
+/* Area names rather than the regional headquarters city: "Region 4" means East
+   Texas, and saying "Tyler" would read as a claim about where the person is. */
+const REGION_AREAS = {
+  1: 'Panhandle',
+  2: 'North Central',
+  3: 'Dallas and Fort Worth',
+  4: 'East Texas',
+  5: 'Deep East Texas',
+  6: 'Houston area',
+  7: 'Central Texas',
+  8: 'South Texas',
+  9: 'West Texas',
+  10: 'Far West Texas',
+  11: 'Rio Grande Valley',
+};
+
 let rows = [];
 let activeType = TYPES[0].key;
 
@@ -95,10 +111,21 @@ function toRecords(table) {
   });
 }
 
-function typeOf(value) {
-  const v = (value || '').trim().toLowerCase();
-  const hit = TYPES.find((t) => t.aliases.includes(v));
-  return hit ? hit.key : 'OTHER';
+/* Plenty of administrators hold both licences, so a row can name more than one
+   and the person then appears under both tabs. One row per person keeps a
+   correction from having to be made twice. */
+function typesOf(value) {
+  const parts = (value || '')
+    .split(/[;/,]/)
+    .map((v) => v.trim().toLowerCase())
+    .filter(Boolean);
+
+  const keys = parts.map((v) => {
+    const hit = TYPES.find((t) => t.aliases.includes(v));
+    return hit ? hit.key : 'OTHER';
+  });
+
+  return [...new Set(keys.length ? keys : ['OTHER'])];
 }
 
 function regionOf(value, hhscRegion) {
@@ -112,7 +139,7 @@ function normalise(records) {
     .filter((r) => r.name)
     .map((r) => ({
       name: r.name,
-      type: typeOf(r.license_type),
+      types: typesOf(r.license_type),
       region: regionOf(r.region, r.hhsc_region),
       hhscRegion: r.hhsc_region || '',
       city: r.city || '',
@@ -140,7 +167,7 @@ function currentTerm() {
 
 function visibleTypes() {
   /* "Other" earns a tab only when something actually lands in it. */
-  return TYPES.filter((t) => t.key !== 'OTHER' || rows.some((r) => r.type === 'OTHER'));
+  return TYPES.filter((t) => t.key !== 'OTHER' || rows.some((r) => r.types.includes('OTHER')));
 }
 
 /* --- rendering ---------------------------------------------------------- */
@@ -191,10 +218,14 @@ function card(row) {
   heading.append(el('h3', 'card-name', row.name));
   if (row.organization) heading.append(el('p', 'card-org', row.organization));
 
-  /* Most submissions name an HHSC region rather than a city, so show whichever
-     of the two we actually have. */
-  const place = [row.city, row.hhscRegion ? 'Region ' + row.hhscRegion : ''].filter(Boolean);
-  if (place.length) heading.append(el('p', 'card-city', place.join(' · ')));
+  /* Most submissions name an HHSC region rather than a city. Name the area too
+     when that is all we have, since a bare region number tells a newcomer
+     nothing about where the person actually is. */
+  const region = row.hhscRegion ? 'Region ' + row.hhscRegion : '';
+  const area = REGION_AREAS[Number(row.hhscRegion)];
+  const place = row.city ? [row.city, region] : [region, area];
+  const shownPlace = place.filter(Boolean).join(' · ');
+  if (shownPlace) heading.append(el('p', 'card-city', shownPlace));
 
   head.append(heading);
 
@@ -247,7 +278,7 @@ function renderTabs() {
 function renderPanel() {
   const panel = document.getElementById('panel');
   const term = currentTerm();
-  const shown = rows.filter((r) => r.type === activeType && matches(r, term));
+  const shown = rows.filter((r) => r.types.includes(activeType) && matches(r, term));
 
   panel.replaceChildren();
   panel.setAttribute('aria-labelledby', 'tab-' + activeType);
@@ -343,8 +374,8 @@ async function start() {
 
   /* Tab order is CPA first by design, but opening on an empty tab reads as a
      broken site. Fall through to the first tab that actually has somebody. */
-  if (!rows.some((r) => r.type === activeType)) {
-    const populated = visibleTypes().find((t) => rows.some((r) => r.type === t.key));
+  if (!rows.some((r) => r.types.includes(activeType))) {
+    const populated = visibleTypes().find((t) => rows.some((r) => r.types.includes(t.key)));
     if (populated) activeType = populated.key;
   }
 

@@ -448,6 +448,149 @@ a:hover {
   text-align: center;
 }
 
+/* --- get listed form ---------------------------------------------------- */
+
+.signup {
+  margin-top: 4rem;
+}
+
+.signup-box {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.signup-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 600;
+}
+
+.signup-copy {
+  margin: 0.6rem 0 0;
+  max-width: 44rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.signup-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.optional {
+  color: var(--faint);
+  font-weight: 400;
+}
+
+.field input,
+.field select {
+  padding: 0.7rem 0.85rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--accent);
+}
+
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.consent input {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  accent-color: var(--accent);
+  width: 1rem;
+  height: 1rem;
+}
+
+.submit {
+  padding: 0.85rem 1.8rem;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.form-status {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+}
+
+.form-status.is-good {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.form-status.is-bad {
+  color: #b3261e;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .form-status.is-bad {
+    color: #f2b8b5;
+  }
+}
+
 /* --- footer ------------------------------------------------------------- */
 
 .footer {
