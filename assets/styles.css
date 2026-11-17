@@ -252,33 +252,43 @@ a:hover {
 
 /* --- tabs --------------------------------------------------------------- */
 
+.tabs-prompt {
+  margin: 1.75rem 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin: 1.75rem 0 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2.5rem;
 }
 
 .tab {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.7rem 1.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 1rem 1.25rem;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
-  color: var(--muted);
+  color: var(--ink);
   font: inherit;
-  font-weight: 550;
+  text-align: left;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .tab:hover {
   transform: translateY(-1px);
+  border-color: var(--accent);
   box-shadow: var(--shadow-lift);
-  color: var(--ink);
 }
 
 .tab[aria-selected="true"] {
@@ -289,18 +299,29 @@ a:hover {
 }
 
 .tab-abbr {
-  padding: 0.1rem 0.5rem;
-  background: var(--accent-soft);
-  border-radius: 999px;
-  color: var(--accent-ink);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
-.tab[aria-selected="true"] .tab-abbr {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
+.tab-label {
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.3;
+}
+
+/* The hint is what tells a visitor the other card is a button, so it reads as
+   a link-coloured call to action until it is the one selected. */
+.tab-hint {
+  margin-top: 0.35rem;
+  color: var(--accent-ink);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.tab[aria-selected="true"] .tab-hint {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* --- regions and cards -------------------------------------------------- */

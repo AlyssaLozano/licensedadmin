@@ -10,7 +10,7 @@ no database and no login. Edit that file, save, push, and the site updates.
 | `name` | yes | The administrator's name and credentials. Rows with no name are skipped. |
 | `license_type` | yes | `LCCA` for GRO, `LCPAA` for CPA. This picks the tab. |
 | `hhsc_region` | no | The HHSC region number, 1 to 11. Shown on the card, and used to pick the city heading when `region` is blank. |
-| `region` | no | `Houston`, `Dallas`, `Austin`, or `Other`. Overrides whatever the region number would have chosen. |
+| `region` | no | `Houston`, `Dallas`, `Austin`, `San Antonio`, or `Other`. Overrides whatever the region number would have chosen. |
 | `city` | no | The actual city. Round Rock sits under the Austin heading, for example. |
 | `organization` | no | Their agency or company. |
 | `phone` | no | Shown as a tap-to-call link. |
@@ -34,8 +34,8 @@ Leave a cell empty when you do not have it. The card only shows the lines it
 actually has, so a blank never leaves a gap on the page.
 
 There are only two tabs, CPA and GRO. "Other" is a region heading inside a tab,
-for a region that is known but does not have a tab of its own, such as San
-Antonio or East Texas. A blank region gets "Undisclosed" instead, so the two
+for a region that is known but does not have a heading of its own, such as
+East Texas or the Panhandle. A blank region gets "Undisclosed" instead, so the two
 are never confused.
 
 Leave `license_type` blank and the row is treated as LCCA, since nearly everyone

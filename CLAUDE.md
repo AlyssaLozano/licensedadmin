@@ -30,11 +30,11 @@ Quote any value containing a comma.
 ## Non-negotiables
 
 **There are two tabs and only two: CPA and GRO.** "Other" is a region heading
-*inside* a tab, for a region that is known but has no tab of its own, such as
-San Antonio. Do not add a third tab.
+*inside* a tab, for a region that is known but has no heading of its own, such as
+East Texas. Do not add a third tab.
 
 **"Other" and "Undisclosed" are different facts.** Other means we know the
-region and it has no tab. Undisclosed means the person never said. Filing the
+region and it has no heading. Undisclosed means the person never said. Filing the
 second under the first claims a placement nobody made.
 
 **Never guess somebody's licence from context.** A blank defaults to LCCA by the

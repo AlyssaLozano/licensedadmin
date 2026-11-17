@@ -4,8 +4,16 @@
 const DATA_URL = 'data/administrators.csv';
 
 /* These two are the only tabs. "Other" is a region heading inside a tab, never
-   a tab of its own. */
+   a tab of its own. GRO comes first because nearly everyone listed is an LCCA,
+   so most visitors land on the list they came for. */
 const TYPES = [
+  {
+    key: 'GRO',
+    label: 'General Residential Operation',
+    abbr: 'GRO',
+    licence: 'LCCA',
+    aliases: ['gro', 'lcca', 'general residential operation'],
+  },
   {
     key: 'CPA',
     label: 'Child Placing Agency',
@@ -15,23 +23,16 @@ const TYPES = [
        than the operation type. Accept both. */
     aliases: ['cpa', 'lcpaa', 'child placing agency', 'child-placing agency', 'child placement agency'],
   },
-  {
-    key: 'GRO',
-    label: 'General Residential Operation',
-    abbr: 'GRO',
-    licence: 'LCCA',
-    aliases: ['gro', 'lcca', 'general residential operation'],
-  },
 ];
 
 /* Cities group within a tab. Anything unrecognised falls to "Other" rather than
    creating a new heading, so the page shape stays predictable. */
-const REGIONS = ['Houston', 'Dallas', 'Austin', 'Other', 'Undisclosed'];
+const REGIONS = ['Houston', 'Dallas', 'Austin', 'San Antonio', 'Other', 'Undisclosed'];
 
 /* Listings arrive quoting an HHSC region number, not a city, so the number can
-   stand in for the grouping when no city bucket is given. Only the three that
-   have their own tab need mapping: everything else lands in Other anyway. */
-const REGION_BY_NUMBER = { 3: 'Dallas', 6: 'Houston', 7: 'Austin' };
+   stand in for the grouping when no city bucket is given. Only the regions
+   with a heading of their own need mapping: everything else lands in Other. */
+const REGION_BY_NUMBER = { 3: 'Dallas', 6: 'Houston', 7: 'Austin', 8: 'San Antonio' };
 
 /* Area names rather than the regional headquarters city: "Region 4" means East
    Texas, and saying "Tyler" would read as a claim about where the person is. */
@@ -137,7 +138,7 @@ function typesOf(value) {
 }
 
 /* "Other" and "Undisclosed" are different facts and should not share a
-   heading. San Antonio is a region we know and simply has no tab; a blank is a
+   heading. East Texas is a region we know and simply has no heading; a blank is a
    person who never told us. Filing the second under "Other" implies we placed
    them somewhere, and readers stop trusting the headings. */
 function regionOf(value, hhscRegion) {
@@ -299,8 +300,14 @@ function renderTabs() {
     btn.setAttribute('aria-selected', String(selected));
     btn.tabIndex = selected ? 0 : -1;
 
+    /* Visitors were missing that the other list existed at all, so each tab
+       says outright whether it is the one showing or one to tap. */
+    const count = rows.filter((r) => r.types.includes(type.key)).length;
+    btn.append(el('span', 'tab-abbr', type.abbr));
     btn.append(el('span', 'tab-label', type.label));
-    if (type.abbr) btn.append(el('span', 'tab-abbr', type.abbr));
+    btn.append(
+      el('span', 'tab-hint', (selected ? 'Showing ' : 'Tap to view ') + count + ' ' + type.licence)
+    );
 
     btn.addEventListener('click', () => select(type.key));
     bar.append(btn);
@@ -416,7 +423,7 @@ async function start() {
     );
   }
 
-  /* Tab order is CPA first by design, but opening on an empty tab reads as a
+  /* GRO opens first by design, but opening on an empty tab reads as a
      broken site. Fall through to the first tab that actually has somebody. */
   if (!rows.some((r) => r.types.includes(activeType))) {
     const populated = visibleTypes().find((t) => rows.some((r) => r.types.includes(t.key)));

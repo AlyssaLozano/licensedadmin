@@ -20,7 +20,7 @@ data/administrators.csv   the entire contents of the site
 
 Tabs are the type of operation, Child Placing Agency (CPA) and General
 Residential Operation (GRO). Inside each tab, listings group by city: Houston,
-Dallas, Austin, Other.
+Dallas, Austin, San Antonio, Other.
 
 To add or change a listing, edit `data/administrators.csv` and push. See
 [docs/updating.md](docs/updating.md).
