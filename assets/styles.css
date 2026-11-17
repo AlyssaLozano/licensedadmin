@@ -1,5 +1,6 @@
-/* One stylesheet, no framework. Warm paper tones so a directory of people reads
-   as an invitation rather than a database dump. */
+/* One stylesheet, no framework. Warm paper tones with a deep teal header and a
+   handful of card tones, so a directory of people reads as an invitation
+   rather than a database dump. */
 
 :root {
   --paper: #fcf9f5;
@@ -12,6 +13,10 @@
   --accent: #a65a3a;
   --accent-ink: #8a4930;
   --accent-soft: #f6e7dd;
+  --teal: #17463f;
+  --teal-deep: #0f332e;
+  --sun: #e8a33d;
+  --on-dark: #fbf4ea;
   --shadow: 0 1px 2px rgba(60, 45, 32, 0.05), 0 8px 24px rgba(60, 45, 32, 0.06);
   --shadow-lift: 0 2px 4px rgba(60, 45, 32, 0.07), 0 14px 32px rgba(60, 45, 32, 0.1);
   --radius: 16px;
@@ -31,6 +36,8 @@
     --accent: #e2926c;
     --accent-ink: #f0b394;
     --accent-soft: #33261f;
+    --teal: #12332f;
+    --teal-deep: #0b2320;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.28);
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 32px rgba(0, 0, 0, 0.4);
   }
@@ -83,26 +90,57 @@ a:hover {
 /* --- masthead ----------------------------------------------------------- */
 
 .masthead {
-  background: linear-gradient(180deg, var(--wash), var(--paper));
-  border-bottom: 1px solid var(--line);
-  padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.75rem, 6vw, 4rem);
+  background:
+    radial-gradient(40rem 22rem at 12% 0%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 70%),
+    radial-gradient(34rem 20rem at 92% 100%, color-mix(in srgb, var(--sun) 35%, transparent), transparent 70%),
+    linear-gradient(160deg, var(--teal), var(--teal-deep));
+  color: var(--on-dark);
   text-align: center;
+}
+
+/* A faint scatter of stars, for Texas, kept low enough not to fight the text. */
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='%23fff' fill-opacity='0.07'%3E%3Cpath d='M20 8l3 9h9l-7 6 3 9-8-6-8 6 3-9-7-6h9z'/%3E%3Cpath d='M86 64l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.masthead .wrap {
+  position: relative;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 1.1rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  color: var(--sun);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .masthead h1 {
   margin: 0;
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.05;
 }
 
 .lede {
-  margin: 1rem auto 0;
+  margin: 1.1rem auto 0;
   max-width: 34rem;
-  color: var(--muted);
-  font-size: clamp(1rem, 2vw, 1.1rem);
+  color: rgba(251, 244, 234, 0.82);
+  font-size: clamp(1rem, 2vw, 1.12rem);
 }
 
 .glossary {
@@ -110,31 +148,42 @@ a:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.6rem;
-  margin: 1.75rem 0 0;
+  margin: 1.9rem 0 0;
 }
 
 .glossary > div {
   display: flex;
   align-items: baseline;
+  text-align: left;
   gap: 0.5rem;
-  padding: 0.35rem 0.9rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  padding: 0.4rem 0.95rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  box-shadow: var(--shadow);
 }
 
 .glossary dt {
-  font-weight: 650;
+  font-weight: 700;
   font-size: 0.78rem;
   letter-spacing: 0.09em;
-  color: var(--accent-ink);
+  color: var(--sun);
 }
 
 .glossary dd {
   margin: 0;
   font-size: 0.88rem;
-  color: var(--muted);
+  color: rgba(251, 244, 234, 0.85);
+}
+
+.glossary b {
+  color: var(--on-dark);
+}
+
+.stats {
+  margin: 1.5rem 0 0;
+  color: rgba(251, 244, 234, 0.7);
+  font-size: 0.85rem;
+  font-weight: 550;
 }
 
 /* --- supporters --------------------------------------------------------- */
@@ -230,8 +279,11 @@ a:hover {
 
 .search input {
   width: 100%;
-  padding: 0.85rem 1.15rem;
-  background: var(--surface);
+  padding: 0.85rem 1.15rem 0.85rem 2.8rem;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%239a938a' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='8' cy='8' r='6'/%3E%3Cpath d='M12.5 12.5L17 17'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 1.1rem center;
   border: 1px solid var(--line);
   border-radius: 999px;
   box-shadow: var(--shadow);
@@ -341,6 +393,16 @@ a:hover {
   letter-spacing: -0.01em;
 }
 
+.region-name::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.7rem;
+  height: 0.7rem;
+  background: linear-gradient(135deg, var(--accent), var(--sun));
+  border-radius: 3px;
+  transform: rotate(45deg);
+}
+
 .region-name::after {
   content: "";
   flex: 1;
@@ -368,13 +430,25 @@ a:hover {
   list-style: none;
 }
 
+/* Each tone is one colour; the soft fill and the readable ink are mixed from
+   it, so adding a tone is one line and dark mode follows on its own. */
+.tone-0 { --tone: #c96f4a; }
+.tone-1 { --tone: #2f8a80; }
+.tone-2 { --tone: #d4952c; }
+.tone-3 { --tone: #9a5fae; }
+.tone-4 { --tone: #4f83c2; }
+.tone-5 { --tone: #6f9a4a; }
+
 .card {
+  --tone-soft: color-mix(in srgb, var(--tone) 16%, var(--surface));
+  --tone-ink: color-mix(in srgb, var(--tone) 62%, #000);
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   padding: 1.35rem;
   background: var(--surface);
   border: 1px solid var(--line);
+  border-top: 4px solid var(--tone, var(--accent));
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -397,9 +471,9 @@ a:hover {
   flex: 0 0 auto;
   width: 2.75rem;
   height: 2.75rem;
-  background: var(--accent-soft);
+  background: var(--tone-soft, var(--accent-soft));
   border-radius: 50%;
-  color: var(--accent-ink);
+  color: var(--tone-ink, var(--accent-ink));
   font-size: 0.85rem;
   font-weight: 650;
   letter-spacing: 0.03em;
@@ -477,8 +551,11 @@ a:hover {
 
 .signup-box {
   padding: clamp(1.5rem, 4vw, 2.5rem);
-  background: var(--surface);
+  background:
+    radial-gradient(30rem 14rem at 100% 0%, color-mix(in srgb, var(--sun) 16%, transparent), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--teal) 7%, var(--surface)), var(--surface));
   border: 1px solid var(--line);
+  border-top: 4px solid var(--teal);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -621,6 +698,27 @@ a:hover {
   color: var(--muted);
   font-size: 0.88rem;
   text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    --tone-soft: color-mix(in srgb, var(--tone) 22%, var(--surface));
+    --tone-ink: color-mix(in srgb, var(--tone) 65%, #fff);
+  }
+
+  .signup-box {
+    border-top-color: var(--accent);
+  }
+
+  /* The dark accent is a light peach, which white text cannot sit on. */
+  .tab[aria-selected="true"],
+  .submit {
+    color: var(--paper);
+  }
+
+  .tab[aria-selected="true"] .tab-hint {
+    color: color-mix(in srgb, var(--paper) 85%, transparent);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

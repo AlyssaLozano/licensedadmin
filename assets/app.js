@@ -241,8 +241,18 @@ function displayName(row, typeKey) {
   return type ? base + ', ' + type.licence : base;
 }
 
+/* A wall of identical cards reads as a spreadsheet. Each person gets one of a
+   few tones, picked from their name so it stays the same between visits. */
+const TONES = 6;
+
+function toneOf(name) {
+  let hash = 0;
+  for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
+  return 'tone-' + (hash % TONES);
+}
+
 function card(row, typeKey) {
-  const li = el('li', 'card');
+  const li = el('li', 'card ' + toneOf(row.name));
 
   const head = el('div', 'card-head');
   head.append(el('span', 'avatar', initials(row.name)));
@@ -433,6 +443,11 @@ async function start() {
   /* An explicit link wins over that, so a shared #cpa still lands on CPA. */
   const fromUrl = location.hash.replace('#', '').toUpperCase();
   if (TYPES.some((t) => t.key === fromUrl)) activeType = fromUrl;
+
+  const regions = new Set(rows.map((r) => r.hhscRegion).filter(Boolean));
+  const stats = document.getElementById('stats');
+  stats.textContent = rows.length + ' administrators listed across ' + regions.size + ' HHSC regions';
+  stats.hidden = false;
 
   renderTabs();
   renderPanel();
