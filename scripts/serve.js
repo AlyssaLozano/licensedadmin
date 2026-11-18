@@ -41,9 +41,12 @@ const server = http.createServer((req, res) => {
       res.writeHead(404, { 'Content-Type': 'text/plain' }).end('Not found');
       return;
     }
+    /* GitHub Pages sends Last-Modified and the page reads it for its
+       "Updated" date, so the preview sends one too. */
     res.writeHead(200, {
       'Content-Type': TYPES[path.extname(target).toLowerCase()] || 'application/octet-stream',
       'Cache-Control': 'no-store',
+      'Last-Modified': fs.statSync(target).mtime.toUTCString(),
     });
     res.end(body);
   });

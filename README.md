@@ -9,12 +9,14 @@ codebase, a database, or a release cycle.
 
 ## How it works
 
-There is no database and no server. The site is three files plus a spreadsheet:
+There is no database and no server. The site is a few files plus a spreadsheet:
 
 ```
 index.html            the page
 assets/styles.css     the look
-assets/app.js         reads the CSV, builds the tabs and cards
+assets/app.js         builds the tabs and cards
+assets/data.js        reads the CSV; shared with the check script
+assets/form.js        the sign-up and change-request form
 data/administrators.csv   the entire contents of the site
 ```
 
@@ -22,8 +24,8 @@ Tabs are the type of operation, Child Placing Agency (CPA) and General
 Residential Operation (GRO). Inside each tab, listings group by city: Houston,
 Dallas, Austin, San Antonio, Other.
 
-To add or change a listing, edit `data/administrators.csv` and push. See
-[docs/updating.md](docs/updating.md).
+To add or change a listing, edit `data/administrators.csv`, run
+`npm run check`, and push. See [docs/updating.md](docs/updating.md).
 
 A database was considered and rejected. It would need a server, a login,
 and backups, all so one person can edit one list.

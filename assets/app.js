@@ -3,32 +3,6 @@
 
 const DATA_URL = 'data/administrators.csv';
 
-/* These two are the only tabs. "Other" is a region heading inside a tab, never
-   a tab of its own. GRO comes first because nearly everyone listed is an LCCA,
-   so most visitors land on the list they came for. */
-const TYPES = [
-  {
-    key: 'GRO',
-    label: 'General Residential Operation',
-    abbr: 'GRO',
-    licence: 'LCCA',
-    aliases: ['gro', 'lcca', 'general residential operation'],
-  },
-  {
-    key: 'CPA',
-    label: 'Child Placing Agency',
-    abbr: 'CPA',
-    licence: 'LCPAA',
-    /* A CPA administrator's licence reads LCPAA, so people submit that rather
-       than the operation type. Accept both. */
-    aliases: ['cpa', 'lcpaa', 'child placing agency', 'child-placing agency', 'child placement agency'],
-  },
-];
-
-/* Cities group within a tab. Anything unrecognised falls to "Other" rather than
-   creating a new heading, so the page shape stays predictable. */
-const REGIONS = ['Houston', 'Dallas', 'Austin', 'San Antonio', 'Other', 'Undisclosed'];
-
 /* Listings arrive quoting an HHSC region number, not a city, so the number can
    stand in for the grouping when no city bucket is given. Only the regions
    with a heading of their own need mapping: everything else lands in Other. */
@@ -52,90 +26,6 @@ const REGION_AREAS = {
 
 let rows = [];
 let activeType = TYPES[0].key;
-
-/* --- CSV ---------------------------------------------------------------- */
-
-/* Handles quoted fields, escaped quotes, and commas or newlines inside a field,
-   because Excel writes all three the moment a name contains a comma. */
-function parseCsv(text) {
-  const clean = text.replace(/^﻿/, '').replace(/\r\n?/g, '\n');
-  const table = [];
-  let row = [];
-  let field = '';
-  let quoted = false;
-
-  for (let i = 0; i < clean.length; i++) {
-    const c = clean[i];
-
-    if (quoted) {
-      if (c !== '"') {
-        field += c;
-      } else if (clean[i + 1] === '"') {
-        field += '"';
-        i++;
-      } else {
-        quoted = false;
-      }
-      continue;
-    }
-
-    if (c === '"') {
-      quoted = true;
-    } else if (c === ',') {
-      row.push(field);
-      field = '';
-    } else if (c === '\n') {
-      row.push(field);
-      table.push(row);
-      row = [];
-      field = '';
-    } else {
-      field += c;
-    }
-  }
-
-  row.push(field);
-  table.push(row);
-
-  return table.filter((r) => r.some((v) => v.trim() !== ''));
-}
-
-function toRecords(table) {
-  if (!table.length) return [];
-  const headers = table[0].map((h) => h.trim().toLowerCase());
-
-  return table.slice(1).map((cells) => {
-    const record = {};
-    headers.forEach((h, i) => {
-      record[h] = (cells[i] || '').trim();
-    });
-    return record;
-  });
-}
-
-/* Plenty of administrators hold both licences, so a row can name more than one
-   and the person then appears under both tabs. One row per person keeps a
-   correction from having to be made twice. */
-function typesOf(value) {
-  const parts = (value || '')
-    .split(/[;/,]/)
-    .map((v) => v.trim().toLowerCase())
-    .filter(Boolean);
-
-  /* Nearly everybody on this list is an LCCA, so a row nobody has filled in yet
-     defaults to GRO. A misspelled licence is left unplaced on purpose: a blank
-     means the field is outstanding, a typo means somebody meant something
-     specific and it did not land, and quietly turning that into LCCA would
-     publish a claim about their licence that nobody made. */
-  if (!parts.length) return ['GRO'];
-
-  const keys = parts
-    .map((v) => TYPES.find((t) => t.aliases.includes(v)))
-    .filter(Boolean)
-    .map((t) => t.key);
-
-  return [...new Set(keys)];
-}
 
 /* "Other" and "Undisclosed" are different facts and should not share a
    heading. East Texas is a region we know and simply has no heading; a blank is a
@@ -293,7 +183,45 @@ function card(row, typeKey) {
   if (contact.childElementCount) li.append(contact);
   else li.append(el('p', 'no-contact', 'No contact details listed'));
 
+  /* People kept emailing to ask how to change their own listing. This opens
+     the form already pointed at them, so a correction arrives in one go. */
+  if (!document.getElementById('signup').hidden) {
+    const update = el('button', 'card-update', 'Request a change');
+    update.type = 'button';
+    update.setAttribute('aria-label', 'Request a change to the listing for ' + row.name);
+    update.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('listing:update', { detail: { name: row.name } }));
+    });
+    li.append(update);
+  }
+
   return li;
+}
+
+function regionId(region) {
+  return 'region-' + region.toLowerCase().replace(/\s+/g, '-');
+}
+
+/* "Find your city" in a long tab otherwise means scrolling past every other
+   city first. Only the cities with somebody in them get a chip. */
+function renderJump(shown) {
+  const nav = document.getElementById('jump');
+  nav.replaceChildren();
+
+  const present = REGIONS.filter((region) => shown.some((r) => r.region === region));
+  nav.hidden = present.length < 2;
+
+  present.forEach((region) => {
+    const chip = el('button', 'jump-chip');
+    chip.type = 'button';
+    chip.append(el('span', null, region));
+    chip.append(el('span', 'jump-count', String(shown.filter((r) => r.region === region).length)));
+    chip.addEventListener('click', () => {
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.getElementById(regionId(region)).scrollIntoView({ behavior: still ? 'auto' : 'smooth' });
+    });
+    nav.append(chip);
+  });
 }
 
 function renderTabs() {
@@ -338,6 +266,8 @@ function renderPanel() {
       : shown.length + ' administrators listed'
     : '';
 
+  renderJump(shown);
+
   if (!shown.length) {
     panel.append(
       el(
@@ -354,6 +284,7 @@ function renderPanel() {
     if (!inRegion.length) return;
 
     const section = el('section', 'region');
+    section.id = regionId(region);
 
     const heading = el('h2', 'region-name');
     heading.append(el('span', 'region-text', region));
@@ -403,10 +334,16 @@ async function start() {
   wireTabKeys();
   document.getElementById('search').addEventListener('input', renderPanel);
 
+  let updated = null;
+
   try {
     const res = await fetch(DATA_URL, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     rows = normalise(toRecords(parseCsv(await res.text())));
+    /* GitHub Pages stamps every file with the time of the last publish, which
+       is close enough to "last edited" for a list that only changes by push. */
+    const stamp = new Date(res.headers.get('Last-Modified'));
+    if (!isNaN(stamp)) updated = stamp;
   } catch (err) {
     showNotice(
       location.protocol === 'file:'
@@ -446,7 +383,18 @@ async function start() {
 
   const regions = new Set(rows.map((r) => r.hhscRegion).filter(Boolean));
   const stats = document.getElementById('stats');
-  stats.textContent = rows.length + ' administrators listed across ' + regions.size + ' HHSC regions';
+  let summary = rows.length + ' administrators listed across ' + regions.size + ' HHSC regions';
+  if (updated) {
+    summary +=
+      ' · Updated ' +
+      updated.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'America/Chicago',
+      });
+  }
+  stats.textContent = summary;
   stats.hidden = false;
 
   renderTabs();

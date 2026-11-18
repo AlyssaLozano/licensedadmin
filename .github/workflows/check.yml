@@ -1,0 +1,19 @@
+# Runs scripts/check.js on every change to the list. Pages publishes from the
+# branch on its own, so this cannot stop a bad row going live, but a failure
+# emails the owner and marks the commit red within a minute.
+name: Check the list
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run check

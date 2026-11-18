@@ -61,6 +61,18 @@ A directory entry nobody can write to is worse than no entry.
 
 ## Checking your work
 
+Before every push that touches the list:
+
+```bash
+npm run check
+```
+
+It flags phone formats, unknown licences, regions outside 1 to 11, duplicate
+people, and email domains that cannot receive mail. Fix what it reports rather
+than pushing past it. It also runs on GitHub after each push.
+
+To see the page itself:
+
 ```bash
 npm run serve
 ```

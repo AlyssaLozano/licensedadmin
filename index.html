@@ -8,6 +8,18 @@
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 
+<!-- The link mostly travels through group chats, where these make it a card
+     with a picture instead of a bare address. -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://licensedadmin.com/">
+<meta property="og:title" content="Licensed Administrators in Texas">
+<meta property="og:description" content="Find a licensed LCCA or LCPAA administrator in Texas, listed by operation type and city.">
+<meta property="og:image" content="https://licensedadmin.com/assets/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Licensed Administrators in Texas, a directory of LCCA and LCPAA administrators">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -87,24 +99,41 @@
   <p class="tabs-prompt" id="tabs-prompt">Choose a list</p>
   <div id="tabs" class="tabs" role="tablist" aria-labelledby="tabs-prompt"></div>
 
+  <nav id="jump" class="jump" aria-label="Jump to a city" hidden></nav>
+
   <div id="panel" class="panel" role="tabpanel" tabindex="0"></div>
 
 </main>
 
 <section id="signup" class="signup wrap" hidden>
   <div class="signup-box">
-    <h2 class="signup-title">Want to be added to this list?</h2>
-    <p class="signup-copy">
+    <h2 id="signup-title" class="signup-title">Want to be added to this list?</h2>
+    <p id="signup-copy" class="signup-copy">
       Fill this in and it goes straight to the person who maintains the
       directory. Only your name, licence type and email are needed. Everything
       else is optional, and only what you enter here gets published.
     </p>
+    <p id="signup-switch" class="signup-switch" hidden>
+      <button id="f-new" class="text-button" type="button">Adding someone new instead?</button>
+    </p>
 
     <form id="signup-form" class="signup-form" novalidate>
+      <input id="f-request" name="request" type="hidden" value="New listing">
+
+      <div id="f-change-field" class="field field-wide" hidden>
+        <label for="f-change">What should change?</label>
+        <textarea id="f-change" name="change" rows="3"
+                  placeholder="For example: add LCPAA after my name, or use my new phone number"></textarea>
+      </div>
+
       <div class="field field-wide">
         <label for="f-name">Full name and credentials</label>
         <input id="f-name" name="name" type="text" required
-               placeholder="Jane Smith, LCCA" autocomplete="name">
+               placeholder="Jane Smith, MS, LCCA" autocomplete="name"
+               aria-describedby="f-name-hint">
+        <p id="f-name-hint" class="field-hint">
+          Put your credentials after a comma, exactly as you want them shown.
+        </p>
       </div>
 
       <div class="field">
@@ -113,6 +142,7 @@
           <option value="">Choose one</option>
           <option value="LCCA">LCCA (General Residential Operation)</option>
           <option value="LCPAA">LCPAA (Child Placing Agency)</option>
+          <option value="LCCA; LCPAA">Both, LCCA and LCPAA</option>
         </select>
       </div>
 
@@ -139,12 +169,15 @@
 
       <div class="field">
         <label for="f-email">Email</label>
-        <input id="f-email" name="email" type="email" required autocomplete="email">
+        <input id="f-email" name="email" type="email" required autocomplete="email"
+               aria-describedby="f-email-hint">
+        <p id="f-email-hint" class="field-hint is-warn" aria-live="polite" hidden></p>
       </div>
 
       <div class="field">
         <label for="f-phone">Phone <span class="optional">optional</span></label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel"
+               placeholder="(832) 555-0100">
       </div>
 
       <div class="field field-wide">
@@ -182,6 +215,7 @@
   </p>
 </footer>
 
+<script src="assets/data.js"></script>
 <script src="assets/app.js"></script>
 <script src="assets/form.js"></script>
 </body>

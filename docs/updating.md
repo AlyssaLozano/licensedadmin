@@ -70,6 +70,24 @@ Say if the person holds both licences, or the listing goes under GRO only.
 If nobody tells the session otherwise it will commit and push, and the site
 updates about a minute later.
 
+## Checking the list
+
+```bash
+npm run check
+```
+
+This reads the whole list and names any row with a problem: a phone number not
+written like `(832) 555-0100`, a licence that is not LCCA or LCPAA, a region
+number outside 1 to 11, the same person twice, or an email domain that does not
+exist. It runs on GitHub after every push as well, and a failure emails you.
+
+## When somebody wants their listing changed
+
+Every card has a "Request a change" link. It opens the sign-up form with their
+name filled in and a box for what should change, and the email arrives with a
+subject starting "Change to an existing listing". Make the change in the CSV
+the same way as any other edit.
+
 ## Publishing a change
 
 ```bash

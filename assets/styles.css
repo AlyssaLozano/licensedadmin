@@ -62,6 +62,12 @@ body {
   margin-inline: auto;
 }
 
+/* Several blocks set their own display, which would otherwise beat the hidden
+   attribute the scripts use to show and hide them. */
+[hidden] {
+  display: none !important;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -369,7 +375,50 @@ a:hover {
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* --- city shortcuts ----------------------------------------------------- */
+
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -1.25rem 0 2.25rem;
+}
+
+.jump-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.95rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.jump-chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.jump-count {
+  padding: 0 0.45rem;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 /* --- regions and cards -------------------------------------------------- */
+
+.region {
+  scroll-margin-top: 1.5rem;
+}
 
 .region + .region {
   margin-top: 3rem;
@@ -530,6 +579,27 @@ a:hover {
   font-style: italic;
 }
 
+/* Quiet on purpose: most visitors are looking someone up, not correcting them. */
+.card-update {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--faint);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.card-update:hover {
+  color: var(--accent-ink);
+  text-decoration-color: var(--accent);
+}
+
 .empty {
   padding: 3rem 1rem;
   color: var(--muted);
@@ -567,6 +637,24 @@ a:hover {
   font-size: 0.92rem;
 }
 
+.signup-switch {
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+}
+
+.text-button {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--accent-ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
 .signup-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -596,8 +684,20 @@ a:hover {
   font-weight: 400;
 }
 
+.field-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.field-hint.is-warn {
+  color: var(--accent-ink);
+  font-weight: 550;
+}
+
 .field input,
-.field select {
+.field select,
+.field textarea {
   padding: 0.7rem 0.85rem;
   background: var(--paper);
   border: 1px solid var(--line);
@@ -607,8 +707,13 @@ a:hover {
   font-size: 0.95rem;
 }
 
+.field textarea {
+  resize: vertical;
+}
+
 .field input:focus,
-.field select:focus {
+.field select:focus,
+.field textarea:focus {
   border-color: var(--accent);
 }
 
